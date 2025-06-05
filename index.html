@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Fighter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="main-menu" class="menu-screen active">
+            <h1 class="game-title">Bill Fighter</h1>
+            <h2 class="game-subtitle">Choose Your Champion</h2>
+            
+            <div class="main-menu-fighters">
+                <div class="fighter-preview">
+                    <img src="sprites/trump/trump_idle.png" alt="Trump" class="fighter-sprite">
+                    <h3>Donald Trump</h3>
+                    <p>Heavy Hitter</p>
+                </div>
+                <div class="vs-text">VS</div>
+                <div class="fighter-preview">
+                    <img src="sprites/elon/elon_idle.png" alt="Elon" class="fighter-sprite">
+                    <h3>Elon Musk</h3>
+                    <p>Tech Master</p>
+                </div>
+            </div>
+            
+            <div class="menu-options">
+                <button class="menu-btn" id="start-btn">Start Game</button>
+                <button class="menu-btn" id="difficulty-btn">Difficulty: <span id="difficulty-text">Medium</span></button>
+                <button class="menu-btn" id="controls-btn">Controls</button>
+            </div>
+        </div>
+
+        <div id="character-select" class="menu-screen">
+            <h2>Choose Your Fighter</h2>
+            <div class="character-selection">
+                <div class="character-card selected" data-character="trump">
+                    <div class="character-preview trump-preview"></div>
+                    <h3>Donald Trump</h3>
+                    <p>Heavy Hitter</p>
+                    <div class="character-stats">
+                        <div class="stat">Power: ⭐⭐⭐⭐⭐</div>
+                        <div class="stat">Speed: ⭐⭐</div>
+                        <div class="stat">Defense: ⭐⭐⭐⭐</div>
+                    </div>
+                </div>
+                <div class="character-card" data-character="elon">
+                    <div class="character-preview elon-preview"></div>
+                    <h3>Elon Musk</h3>
+                    <p>Tech Master</p>
+                    <div class="character-stats">
+                        <div class="stat">Power: ⭐⭐⭐</div>
+                        <div class="stat">Speed: ⭐⭐⭐⭐⭐</div>
+                        <div class="stat">Defense: ⭐⭐⭐</div>
+                    </div>
+                </div>
+            </div>
+            <button class="menu-btn" id="character-fight-btn">FIGHT!</button>
+            <button class="menu-btn back-btn" id="character-back">Back</button>
+        </div>
+
+        <div id="controls-screen" class="menu-screen">
+            <h2>Controls</h2>
+            <div class="controls-grid">
+                <div class="control-item">
+                    <span class="key">A/D</span>
+                    <span class="action">Move Left/Right</span>
+                </div>
+                <div class="control-item">
+                    <span class="key">W</span>
+                    <span class="action">Jump</span>
+                </div>
+                <div class="control-item">
+                    <span class="key">S</span>
+                    <span class="action">Block</span>
+                </div>
+                <div class="control-item">
+                    <span class="key">J</span>
+                    <span class="action">Punch</span>
+                </div>
+                <div class="control-item">
+                    <span class="key">K</span>
+                    <span class="action">Kick</span>
+                </div>
+                <div class="control-item">
+                    <span class="key">L</span>
+                    <span class="action">Special Move</span>
+                </div>
+                <div class="control-item">
+                    <span class="key">Space</span>
+                    <span class="action">Ultimate Move</span>
+                </div>
+            </div>
+            <button class="menu-btn back-btn" id="controls-back">Back</button>
+        </div>
+
+        <div id="game-screen" class="game-screen">
+            <div class="game-ui">
+                <div class="player-info player1">
+                    <div class="player-name" id="p1-name">TRUMP</div>
+                    <div class="health-bar-container">
+                        <div class="health-bar" id="p1-health"></div>
+                    </div>
+                    <div class="special-bar-container">
+                        <div class="special-bar" id="p1-special"></div>
+                    </div>
+                </div>
+                
+                <div class="game-timer">
+                    <div class="round-info">ROUND <span id="round-number">1</span></div>
+                    <div class="timer" id="game-timer">99</div>
+                </div>
+                
+                <div class="player-info player2">
+                    <div class="player-name" id="p2-name">ELON</div>
+                    <div class="health-bar-container">
+                        <div class="health-bar" id="p2-health"></div>
+                    </div>
+                    <div class="special-bar-container">
+                        <div class="special-bar" id="p2-special"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="combo-counter" id="combo-counter">
+                <span class="combo-number">0</span>
+                <span class="combo-text">HIT COMBO!</span>
+            </div>
+
+            <div class="ultimate-ready" id="ultimate-ready">
+                <div class="ultimate-text">ULTIMATE READY!</div>
+                <div class="ultimate-key">Press SPACE</div>
+            </div>
+
+            <div class="control-hints" id="control-hints">
+                <div class="hint-box">
+                    <div class="hint-title">CONTROLS</div>
+                    <div class="hint-grid">
+                        <span class="hint-key">A/D</span><span class="hint-action">Move</span>
+                        <span class="hint-key">W</span><span class="hint-action">Jump</span>
+                        <span class="hint-key">S</span><span class="hint-action">Block</span>
+                        <span class="hint-key">J</span><span class="hint-action">Punch</span>
+                        <span class="hint-key">K</span><span class="hint-action">Kick</span>
+                        <span class="hint-key">L</span><span class="hint-action">Special</span>
+                        <span class="hint-key">SPACE</span><span class="hint-action">Ultimate</span>
+                    </div>
+                    <div class="hint-tip">Press H to hide/show controls</div>
+                </div>
+            </div>
+
+            <canvas id="game-canvas"></canvas>
+            
+            <div class="fight-announcements" id="fight-announcements">
+                <div class="announcement" id="announcement-text"></div>
+            </div>
+            
+            <div id="tutorial-overlay" class="tutorial-overlay">
+                <div class="tutorial-content">
+                    <h2>Welcome Fighter!</h2>
+                    <p>Use the controls shown on screen to defeat your opponent!</p>
+                    <p>Build up your special meter by landing attacks, then unleash devastating special moves!</p>
+                    <button class="tutorial-start-btn" id="tutorial-start">Start Fighting!</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="pause-menu" class="menu-screen">
+            <h2>PAUSED</h2>
+            <button class="menu-btn" id="resume-btn">Resume</button>
+            <button class="menu-btn" id="restart-btn">Restart</button>
+            <button class="menu-btn" id="quit-btn">Quit to Menu</button>
+        </div>
+
+        <div id="game-over" class="menu-screen">
+            <div class="game-over-content">
+                <h2 id="winner-text">WINNER!</h2>
+                <div class="winner-name" id="winner-name"></div>
+                <div class="winner-sprite-container">
+                    <img id="winner-sprite" src="" alt="Winner" class="winner-sprite">
+                </div>
+                
+                <div class="match-stats">
+                    <h3>Match Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-label">Time:</span>
+                            <span class="stat-value" id="match-time"></span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Max Combo:</span>
+                            <span class="stat-value" id="max-combo"></span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Perfect:</span>
+                            <span class="stat-value" id="perfect-win"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="game-over-buttons">
+                    <button class="menu-btn victory-btn" id="rematch-btn">Rematch</button>
+                    <button class="menu-btn" id="menu-btn">Main Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="characters.js"></script>
+    <script src="ai.js"></script>
+    <script src="audio.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
