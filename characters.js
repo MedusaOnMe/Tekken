@@ -673,3 +673,6 @@ class Character {
         return this.spriteImages[fileName] || null;
     }
 }
+
+// Expose Character class globally
+window.Character = Character;

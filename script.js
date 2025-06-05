@@ -19,7 +19,12 @@ class Game {
         this.effects = [];
         this.screenShake = 0;
         
-        this.audioSystem = new AudioSystem();
+        // Ensure classes are available globally for bundled builds
+        window.AudioSystem = window.AudioSystem || AudioSystem;
+        window.FighterAI = window.FighterAI || FighterAI;
+        window.Character = window.Character || Character;
+        
+        this.audioSystem = new window.AudioSystem();
         this.audioInitialized = false;
         
         this.keys = {};
@@ -288,10 +293,10 @@ class Game {
         
         try {
             console.log('Creating player character:', this.selectedCharacter);
-            this.player = new Character(this.selectedCharacter, playerX, groundY, true);
+            this.player = new window.Character(this.selectedCharacter, playerX, groundY, true);
             const opponentType = this.selectedCharacter === 'trump' ? 'elon' : 'trump';
             console.log('Creating opponent character:', opponentType);
-            this.opponent = new Character(opponentType, opponentX, groundY, false);
+            this.opponent = new window.Character(opponentType, opponentX, groundY, false);
             console.log('Characters created successfully');
         } catch (error) {
             console.error('Error creating characters:', error);
@@ -299,7 +304,7 @@ class Game {
             return;
         }
         
-        this.ai = new FighterAI(this.opponent, this.difficulty);
+        this.ai = new window.FighterAI(this.opponent, this.difficulty);
         this.opponent.ai = this.ai;
         
         this.updateUI();
@@ -1129,4 +1134,6 @@ class Game {
     }
 }
 
+// Expose Game class globally
+window.Game = Game;
 const game = new Game();

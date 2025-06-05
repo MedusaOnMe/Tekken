@@ -233,3 +233,6 @@ class AudioSystem {
         }
     }
 }
+
+// Expose AudioSystem class globally
+window.AudioSystem = AudioSystem;

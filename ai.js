@@ -503,3 +503,6 @@ class FighterAI {
         this.pressureLevel = 0;
     }
 }
+
+// Expose FighterAI class globally
+window.FighterAI = FighterAI;
