@@ -12,8 +12,8 @@
             <div class="main-menu-container">
                 <div class="title-section">
                     <h1 class="game-title">
-                        <span class="title-word title-word-1">POLITICAL</span>
-                        <span class="title-word title-word-2">KOMBAT</span>
+                        <span class="title-word title-word-1">BILL</span>
+                        <span class="title-word title-word-2">FIGHTER</span>
                     </h1>
                     <div class="title-subtitle">The Ultimate Showdown</div>
                 </div>
@@ -303,37 +303,81 @@
             <button class="menu-btn" id="quit-btn">Quit to Menu</button>
         </div>
 
-        <div id="game-over" class="menu-screen">
+        <div id="victory-screen" class="menu-screen">
             <div class="victory-particles" id="victory-particles"></div>
             <div class="confetti-container" id="confetti-container"></div>
-            <div class="game-over-content">
-                <h2 id="winner-text">WINNER!</h2>
-                <div class="winner-name" id="winner-name"></div>
-                <div class="winner-sprite-container">
-                    <img id="winner-sprite" src="" alt="Winner" class="winner-sprite">
+            
+            <div class="victory-layout">
+                <div class="victory-header">
+                    <h1 class="victory-title">VICTORY!</h1>
+                    <div class="victory-winner" id="victory-winner-name">DONALD TRUMP</div>
+                    <div class="victory-subtitle">EMERGES VICTORIOUS!</div>
                 </div>
                 
-                <div class="match-stats">
-                    <h3>Match Statistics</h3>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <span class="stat-label">Time:</span>
-                            <span class="stat-value" id="match-time"></span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Max Combo:</span>
-                            <span class="stat-value" id="max-combo"></span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Perfect:</span>
-                            <span class="stat-value" id="perfect-win"></span>
-                        </div>
+                <div class="victory-showcase">
+                    <div class="victory-character">
+                        <img id="victory-sprite" src="" alt="Victor" class="victory-sprite">
+                        <div class="victory-glow"></div>
+                    </div>
+                    <div class="victory-quote" id="victory-quote">"You're fired!"</div>
+                </div>
+                
+                <div class="victory-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">MATCH TIME</span>
+                        <span class="stat-value" id="victory-time">1:23</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">MAX COMBO</span>
+                        <span class="stat-value" id="victory-combo">7</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">PERFECT WIN</span>
+                        <span class="stat-value" id="victory-perfect">NO</span>
                     </div>
                 </div>
                 
-                <div class="game-over-buttons">
-                    <button class="menu-btn victory-btn" id="rematch-btn">Rematch</button>
-                    <button class="menu-btn" id="menu-btn">Main Menu</button>
+                <div class="victory-actions">
+                    <button class="victory-btn primary" id="victory-rematch-btn">REMATCH</button>
+                    <button class="victory-btn secondary" id="victory-menu-btn">MAIN MENU</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="defeat-screen" class="menu-screen">
+            <div class="defeat-layout">
+                <div class="defeat-header">
+                    <h1 class="defeat-title">DEFEAT</h1>
+                    <div class="defeat-winner" id="defeat-winner-name">ELON MUSK</div>
+                    <div class="defeat-subtitle">HAS CONQUERED!</div>
+                </div>
+                
+                <div class="defeat-showcase">
+                    <div class="defeat-character">
+                        <img id="defeat-sprite" src="" alt="Victor" class="defeat-sprite">
+                        <div class="defeat-shadow"></div>
+                    </div>
+                    <div class="defeat-quote" id="defeat-quote">"To Mars and beyond!"</div>
+                </div>
+                
+                <div class="defeat-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">MATCH TIME</span>
+                        <span class="stat-value" id="defeat-time">1:23</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">MAX COMBO</span>
+                        <span class="stat-value" id="defeat-combo">7</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">DAMAGE DEALT</span>
+                        <span class="stat-value" id="defeat-damage">152</span>
+                    </div>
+                </div>
+                
+                <div class="defeat-actions">
+                    <button class="defeat-btn primary" id="defeat-rematch-btn">TRY AGAIN</button>
+                    <button class="defeat-btn secondary" id="defeat-menu-btn">MAIN MENU</button>
                 </div>
             </div>
         </div>

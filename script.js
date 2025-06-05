@@ -28,7 +28,8 @@ class Game {
         this.gameStats = {
             maxCombo: 0,
             matchTime: 0,
-            perfectWin: true
+            perfectWin: true,
+            damageDealt: 0
         };
         
         // Load background image
@@ -105,11 +106,33 @@ class Game {
             this.quitToMenu();
         });
         
-        document.getElementById('rematch-btn').addEventListener('click', () => {
+        document.getElementById('rematch-btn')?.addEventListener('click', () => {
             this.restartGame();
         });
         
-        document.getElementById('menu-btn').addEventListener('click', () => {
+        document.getElementById('menu-btn')?.addEventListener('click', () => {
+            this.quitToMenu();
+        });
+        
+        // Victory screen buttons
+        document.getElementById('victory-rematch-btn')?.addEventListener('click', () => {
+            this.closeGameOverScreens();
+            this.restartGame();
+        });
+        
+        document.getElementById('victory-menu-btn')?.addEventListener('click', () => {
+            this.closeGameOverScreens();
+            this.quitToMenu();
+        });
+        
+        // Defeat screen buttons
+        document.getElementById('defeat-rematch-btn')?.addEventListener('click', () => {
+            this.closeGameOverScreens();
+            this.restartGame();
+        });
+        
+        document.getElementById('defeat-menu-btn')?.addEventListener('click', () => {
+            this.closeGameOverScreens();
             this.quitToMenu();
         });
         
@@ -126,6 +149,15 @@ class Game {
         document.querySelectorAll('.character-card').forEach(card => {
             card.addEventListener('click', (e) => {
                 this.selectCharacter(e.target.closest('.character-card').dataset.character);
+            });
+            
+            // Add hover animations for character sprites
+            card.addEventListener('mouseenter', () => {
+                this.animateCharacterCard(card, true);
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                this.animateCharacterCard(card, false);
             });
         });
         
@@ -166,18 +198,71 @@ class Game {
     }
     
     hideAllScreens() {
-        document.querySelectorAll('.menu-screen').forEach(screen => {
+        console.log('=== HIDEALLSCREENS DEBUG ===');
+        const menuScreens = document.querySelectorAll('.menu-screen');
+        console.log('Menu screens found:', menuScreens.length);
+        
+        menuScreens.forEach((screen, index) => {
+            console.log(`Screen ${index}: id=${screen.id}, classes=${screen.classList.toString()}`);
             screen.classList.remove('active');
+            console.log(`Screen ${index} after remove: classes=${screen.classList.toString()}`);
         });
-        document.querySelector('.game-screen').classList.remove('active');
+        
+        const gameScreen = document.querySelector('.game-screen');
+        console.log('Game screen found:', !!gameScreen);
+        if (gameScreen) {
+            console.log('Game screen classes before:', gameScreen.classList.toString());
+            gameScreen.classList.remove('active');
+            console.log('Game screen classes after:', gameScreen.classList.toString());
+        }
+    }
+    
+    closeGameOverScreens() {
+        console.log('=== CLOSING GAME OVER SCREENS ===');
+        const victoryScreen = document.getElementById('victory-screen');
+        const defeatScreen = document.getElementById('defeat-screen');
+        
+        if (victoryScreen) {
+            victoryScreen.classList.remove('active');
+            victoryScreen.style.display = 'none';
+            victoryScreen.style.zIndex = '';
+            victoryScreen.style.position = '';
+            victoryScreen.style.backgroundColor = '';
+            victoryScreen.style.backdropFilter = '';
+            console.log('Victory screen closed');
+        }
+        
+        if (defeatScreen) {
+            defeatScreen.classList.remove('active');
+            defeatScreen.style.display = 'none';
+            defeatScreen.style.zIndex = '';
+            defeatScreen.style.position = '';
+            defeatScreen.style.backgroundColor = '';
+            defeatScreen.style.backdropFilter = '';
+            console.log('Defeat screen closed');
+        }
     }
     
     selectCharacter(character) {
         this.selectedCharacter = character;
         document.querySelectorAll('.character-card').forEach(card => {
             card.classList.remove('selected');
+            // Reset aura for unselected cards
+            const aura = card.querySelector('.character-aura');
+            if (aura) {
+                aura.style.opacity = '0';
+            }
         });
-        document.querySelector(`[data-character="${character}"]`).classList.add('selected');
+        
+        const selectedCard = document.querySelector(`[data-character="${character}"]`);
+        selectedCard.classList.add('selected');
+        
+        // Keep aura active for selected character
+        const selectedAura = selectedCard.querySelector('.character-aura');
+        if (selectedAura) {
+            selectedAura.style.opacity = '0.4';
+        }
+        
         this.audioSystem.playSound('menu_select');
     }
     
@@ -214,7 +299,8 @@ class Game {
         this.gameStats = {
             maxCombo: 0,
             matchTime: 0,
-            perfectWin: true
+            perfectWin: true,
+            damageDealt: 0
         };
         
         this.lastTime = performance.now();
@@ -262,7 +348,8 @@ class Game {
         this.gameStats = {
             maxCombo: 0,
             matchTime: 0,
-            perfectWin: true
+            perfectWin: true,
+            damageDealt: 0
         };
         
         this.lastTime = performance.now();
@@ -285,7 +372,7 @@ class Game {
         this.update(deltaTime);
         this.render();
         
-        requestAnimationFrame((time) => this.gameLoop(time));
+        this.gameLoopId = requestAnimationFrame((time) => this.gameLoop(time));
     }
     
     update(deltaTime) {
@@ -743,10 +830,18 @@ class Game {
     }
     
     endRound() {
+        console.log('endRound called');
         this.state = 'round-end';
+        
+        // Stop the game loop
+        if (this.gameLoopId) {
+            cancelAnimationFrame(this.gameLoopId);
+            this.gameLoopId = null;
+        }
         
         const winner = this.player.health > this.opponent.health ? this.player : this.opponent;
         const loser = winner === this.player ? this.opponent : this.player;
+        console.log('Winner determined:', winner.name);
         
         if (winner === this.player && this.player.health === this.player.maxHealth) {
             this.gameStats.perfectWin = true;
@@ -772,35 +867,122 @@ class Game {
     }
     
     showGameOver(winner) {
+        console.log('=== SHOWGAMEOVER DEBUG START ===');
+        console.log('showGameOver called with winner:', winner);
+        console.log('Winner is player:', winner === this.player);
+        console.log('Current state:', this.state);
+        
+        // Log all existing screens
+        const allScreens = document.querySelectorAll('[id$="-screen"]');
+        console.log('All screens in DOM:', Array.from(allScreens).map(s => s.id));
+        
+        // Prevent multiple calls
+        if (this.state === 'game-over') {
+            console.log('Already in game-over state, ignoring duplicate call');
+            return;
+        }
+        this.state = 'game-over';
+        console.log('State set to game-over');
+        
+        console.log('Calling hideAllScreens...');
         this.hideAllScreens();
-        document.getElementById('game-over').classList.add('active');
         
         const isVictory = winner === this.player;
-        const gameOverContent = document.querySelector('.game-over-content');
-        const winnerText = document.getElementById('winner-text');
+        const screenId = isVictory ? 'victory-screen' : 'defeat-screen';
+        console.log('Screen to show:', screenId);
+        console.log('Is victory:', isVictory);
         
-        // Add victory/defeat classes
-        gameOverContent.className = 'game-over-content ' + (isVictory ? 'victory' : 'defeat');
-        winnerText.className = isVictory ? 'victory' : 'defeat';
+        const screen = document.getElementById(screenId);
+        console.log('Screen element found:', !!screen);
         
-        document.getElementById('winner-text').textContent = isVictory ? 'VICTORY!' : 'DEFEAT!';
-        document.getElementById('winner-name').textContent = winner.name.toUpperCase();
-        
-        // Create particle effects
-        if (isVictory) {
-            this.createVictoryParticles();
-            this.createConfetti();
+        if (screen) {
+            console.log('Screen display before:', getComputedStyle(screen).display);
+            console.log('Screen classList before:', screen.classList.toString());
+            
+            screen.classList.add('active');
+            
+            // Force show with inline styles and better background
+            screen.style.display = 'flex';
+            screen.style.zIndex = '9999';
+            screen.style.position = 'fixed';
+            screen.style.top = '0';
+            screen.style.left = '0';
+            screen.style.width = '100%';
+            screen.style.height = '100%';
+            screen.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+            screen.style.backdropFilter = 'blur(10px)';
+            
+            console.log('Screen display after:', getComputedStyle(screen).display);
+            console.log('Screen classList after:', screen.classList.toString());
+            console.log('Screen visibility:', getComputedStyle(screen).visibility);
+            console.log('Screen z-index:', getComputedStyle(screen).zIndex);
+            console.log('Screen position:', getComputedStyle(screen).position);
+            console.log(`${screenId} should now be visible with forced styles`);
+        } else {
+            console.error(`${screenId} not found!`);
         }
         
-        const minutes = Math.floor(this.gameStats.matchTime / 60000);
-        const seconds = Math.floor((this.gameStats.matchTime % 60000) / 1000);
-        document.getElementById('match-time').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        document.getElementById('max-combo').textContent = this.gameStats.maxCombo;
-        document.getElementById('perfect-win').textContent = this.gameStats.perfectWin ? 'YES' : 'NO';
+        if (isVictory) {
+            // Update victory screen
+            const winnerName = document.getElementById('victory-winner-name');
+            const winnerSprite = document.getElementById('victory-sprite');
+            const winnerQuote = document.getElementById('victory-quote');
+            const timeEl = document.getElementById('victory-time');
+            const comboEl = document.getElementById('victory-combo');
+            const perfectEl = document.getElementById('victory-perfect');
+            
+            if (winnerName) winnerName.textContent = winner.name.toUpperCase();
+            if (winnerQuote) {
+                winnerQuote.textContent = winner.type === 'trump' ? '"You\'re fired!"' : '"To Mars and beyond!"';
+            }
+            if (winnerSprite) {
+                winnerSprite.src = `sprites/${winner.type}/${winner.type}_idle.png`;
+            }
+            
+            // Update stats
+            if (timeEl) {
+                const minutes = Math.floor(this.gameStats.matchTime / 60000);
+                const seconds = Math.floor((this.gameStats.matchTime % 60000) / 1000);
+                timeEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }
+            if (comboEl) comboEl.textContent = this.gameStats.maxCombo;
+            if (perfectEl) perfectEl.textContent = this.gameStats.perfectWin ? 'YES' : 'NO';
+            
+            // Create particle effects
+            this.createVictoryParticles();
+            this.createConfetti();
+        } else {
+            // Update defeat screen
+            const winnerName = document.getElementById('defeat-winner-name');
+            const winnerSprite = document.getElementById('defeat-sprite');
+            const winnerQuote = document.getElementById('defeat-quote');
+            const timeEl = document.getElementById('defeat-time');
+            const comboEl = document.getElementById('defeat-combo');
+            const damageEl = document.getElementById('defeat-damage');
+            
+            if (winnerName) winnerName.textContent = winner.name.toUpperCase();
+            if (winnerQuote) {
+                winnerQuote.textContent = winner.type === 'trump' ? '"You\'re fired!"' : '"To Mars and beyond!"';
+            }
+            if (winnerSprite) {
+                winnerSprite.src = `sprites/${winner.type}/${winner.type}_idle.png`;
+            }
+            
+            // Update stats
+            if (timeEl) {
+                const minutes = Math.floor(this.gameStats.matchTime / 60000);
+                const seconds = Math.floor((this.gameStats.matchTime % 60000) / 1000);
+                timeEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }
+            if (comboEl) comboEl.textContent = this.gameStats.maxCombo;
+            if (damageEl) damageEl.textContent = Math.floor(this.opponent.maxHealth - this.opponent.health);
+        }
     }
     
     createVictoryParticles() {
         const container = document.getElementById('victory-particles');
+        if (!container) return; // Exit if container doesn't exist
+        
         container.innerHTML = ''; // Clear existing particles
         
         const emojis = ['🎉', '🎊', '🏆', '⭐', '🎈', '🎆', '🔥', '💯', '🚀', '💪'];
@@ -827,6 +1009,8 @@ class Game {
     
     createConfetti() {
         const container = document.getElementById('confetti-container');
+        if (!container) return; // Exit if container doesn't exist
+        
         container.innerHTML = ''; // Clear existing confetti
         
         const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f39c12', '#9b59b6', '#e74c3c', '#2ecc71', '#f1c40f'];
@@ -849,6 +1033,47 @@ class Game {
         setTimeout(() => {
             container.innerHTML = '';
         }, 5000);
+    }
+    
+    animateCharacterCard(card, isHovering) {
+        const idleSprite = card.querySelector('.idle-sprite');
+        const actionSprite = card.querySelector('.action-sprite');
+        const aura = card.querySelector('.character-aura');
+        
+        if (isHovering) {
+            // Start sprite animation cycle
+            if (idleSprite && actionSprite) {
+                setTimeout(() => {
+                    if (card.matches(':hover')) {
+                        idleSprite.style.opacity = '0';
+                        actionSprite.style.opacity = '1';
+                        
+                        setTimeout(() => {
+                            if (card.matches(':hover')) {
+                                idleSprite.style.opacity = '1';
+                                actionSprite.style.opacity = '0';
+                            }
+                        }, 500);
+                    }
+                }, 200);
+            }
+            
+            // Start aura animation
+            if (aura) {
+                aura.style.opacity = '0.4';
+            }
+        } else {
+            // Reset to idle
+            if (idleSprite && actionSprite) {
+                idleSprite.style.opacity = '1';
+                actionSprite.style.opacity = '0';
+            }
+            
+            // Stop aura animation
+            if (aura && !card.classList.contains('selected')) {
+                aura.style.opacity = '0';
+            }
+        }
     }
     
     showTutorial() {
