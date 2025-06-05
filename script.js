@@ -754,7 +754,20 @@ class Game {
             this.gameStats.perfectWin = false;
         }
         
-        this.showGameOver(winner);
+        // Trigger victory/defeat animations
+        if (winner === this.player) {
+            this.player.playVictoryAnimation();
+            this.opponent.playDefeatAnimation();
+        } else {
+            this.opponent.playVictoryAnimation();
+            this.player.playDefeatAnimation();
+        }
+        
+        // Show game over screen after a short delay to let animations play
+        setTimeout(() => {
+            this.showGameOver(winner);
+        }, 1500);
+        
         this.audioSystem.playSound(winner === this.player ? 'victory' : 'defeat');
     }
     
@@ -762,15 +775,80 @@ class Game {
         this.hideAllScreens();
         document.getElementById('game-over').classList.add('active');
         
-        document.getElementById('winner-text').textContent = 
-            winner === this.player ? 'VICTORY!' : 'DEFEAT!';
+        const isVictory = winner === this.player;
+        const gameOverContent = document.querySelector('.game-over-content');
+        const winnerText = document.getElementById('winner-text');
+        
+        // Add victory/defeat classes
+        gameOverContent.className = 'game-over-content ' + (isVictory ? 'victory' : 'defeat');
+        winnerText.className = isVictory ? 'victory' : 'defeat';
+        
+        document.getElementById('winner-text').textContent = isVictory ? 'VICTORY!' : 'DEFEAT!';
         document.getElementById('winner-name').textContent = winner.name.toUpperCase();
+        
+        // Create particle effects
+        if (isVictory) {
+            this.createVictoryParticles();
+            this.createConfetti();
+        }
         
         const minutes = Math.floor(this.gameStats.matchTime / 60000);
         const seconds = Math.floor((this.gameStats.matchTime % 60000) / 1000);
         document.getElementById('match-time').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         document.getElementById('max-combo').textContent = this.gameStats.maxCombo;
         document.getElementById('perfect-win').textContent = this.gameStats.perfectWin ? 'YES' : 'NO';
+    }
+    
+    createVictoryParticles() {
+        const container = document.getElementById('victory-particles');
+        container.innerHTML = ''; // Clear existing particles
+        
+        const emojis = ['🎉', '🎊', '🏆', '⭐', '🎈', '🎆', '🔥', '💯', '🚀', '💪'];
+        const fragment = document.createDocumentFragment();
+        
+        // Create all particles at once to reduce DOM manipulation
+        for (let i = 0; i < 8; i++) { // Reduced from 15 to 8
+            const particle = document.createElement('div');
+            particle.className = 'victory-particle';
+            particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = (i * 0.3) + 's';
+            particle.style.animationDuration = (3 + Math.random()) + 's';
+            fragment.appendChild(particle);
+        }
+        
+        container.appendChild(fragment);
+        
+        // Clean up after 6 seconds
+        setTimeout(() => {
+            container.innerHTML = '';
+        }, 6000);
+    }
+    
+    createConfetti() {
+        const container = document.getElementById('confetti-container');
+        container.innerHTML = ''; // Clear existing confetti
+        
+        const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f39c12', '#9b59b6', '#e74c3c', '#2ecc71', '#f1c40f'];
+        const fragment = document.createDocumentFragment();
+        
+        // Create all confetti at once to reduce DOM manipulation
+        for (let i = 0; i < 25; i++) { // Reduced from 50 to 25
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti-piece';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDelay = (Math.random() * 2) + 's';
+            confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+            fragment.appendChild(confetti);
+        }
+        
+        container.appendChild(fragment);
+        
+        // Clean up after 5 seconds
+        setTimeout(() => {
+            container.innerHTML = '';
+        }, 5000);
     }
     
     showTutorial() {

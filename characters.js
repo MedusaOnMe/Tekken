@@ -218,6 +218,12 @@ class Character {
         this.doubleJumpUsed = false;
         this.dashCooldown = 0;
         
+        // Victory/Defeat animation states
+        this.isVictorious = false;
+        this.isDefeated = false;
+        this.victoryAnimationTimer = 0;
+        this.defeatAnimationTimer = 0;
+        
         this.ai = null;
         this.projectiles = [];
         
@@ -282,6 +288,30 @@ class Character {
     }
     
     update(deltaTime, opponent, canvas) {
+        // Handle victory/defeat animations first
+        if (this.isVictorious) {
+            this.victoryAnimationTimer += deltaTime;
+            // Add some celebration bouncing
+            if (this.victoryAnimationTimer % 1000 < 500) {
+                this.y -= Math.sin(this.victoryAnimationTimer * 0.01) * 2;
+            }
+            return; // Skip normal physics when celebrating
+        }
+        
+        if (this.isDefeated) {
+            this.defeatAnimationTimer += deltaTime;
+            // Character falls down gradually
+            if (this.defeatAnimationTimer < 2000) {
+                this.velocityY += 0.5;
+                this.y += this.velocityY;
+                if (this.y + this.height >= canvas.height - 100) {
+                    this.y = canvas.height - 100 - this.height;
+                    this.velocityY = 0;
+                }
+            }
+            return; // Skip normal physics when defeated
+        }
+        
         // Simple animation timer (not needed for single frames but kept for consistency)
         this.animationTimer += deltaTime;
         if (this.animationTimer > 100) {
@@ -600,6 +630,32 @@ class Character {
         this.comboBuffer = [];
         this.currentCombo = 0;
         this.projectiles = [];
+        this.isVictorious = false;
+        this.isDefeated = false;
+        this.victoryAnimationTimer = 0;
+        this.defeatAnimationTimer = 0;
+    }
+    
+    playVictoryAnimation() {
+        this.isVictorious = true;
+        this.isDefeated = false;
+        this.currentAnimation = "win";
+        this.victoryAnimationTimer = 0;
+        this.isAttacking = false;
+        this.isDamaged = false;
+        this.velocityX = 0;
+        this.velocityY = 0;
+    }
+    
+    playDefeatAnimation() {
+        this.isDefeated = true;
+        this.isVictorious = false;
+        this.currentAnimation = "defeat";
+        this.defeatAnimationTimer = 0;
+        this.isAttacking = false;
+        this.isDamaged = false;
+        this.velocityX = 0;
+        this.velocityY = 0;
     }
     
     getCurrentFrameCount() {

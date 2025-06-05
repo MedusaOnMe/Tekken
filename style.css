@@ -27,7 +27,9 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.9);
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 25%, #3f4c6b 50%, #d35400 75%, #e74c3c 100%);
+    background-size: 400% 400%;
+    animation: backgroundShift 8s ease infinite;
     z-index: 10;
 }
 
@@ -56,6 +58,12 @@ body {
 @keyframes pulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.05); }
+}
+
+@keyframes backgroundShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .menu-options {
@@ -763,6 +771,11 @@ body {
     text-align: center;
     max-width: 600px;
     margin: 0 auto;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 3em 2em;
+    border-radius: 20px;
+    border: 3px solid #ffd700;
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.5), inset 0 0 20px rgba(255, 215, 0, 0.1);
 }
 
 #winner-text {
@@ -809,6 +822,99 @@ body {
 @keyframes bounce {
     from { transform: translateY(0); }
     to { transform: translateY(-10px); }
+}
+
+/* Victory Particle Effects */
+.victory-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.victory-particle {
+    position: absolute;
+    font-size: 2em;
+    animation: floatUp 3s ease-out infinite;
+}
+
+.confetti-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    animation: confettiFall 3s linear infinite;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-20vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@keyframes victoryPulse {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+    }
+    50% {
+        transform: scale(1.05) rotate(2deg);
+        box-shadow: 0 0 80px rgba(255, 215, 0, 0.8);
+    }
+}
+
+.game-over-content.victory {
+    animation: victoryPulse 2s ease-in-out infinite;
+    border-color: #4CAF50;
+    box-shadow: 0 0 50px rgba(76, 175, 80, 0.5), inset 0 0 20px rgba(76, 175, 80, 0.1);
+}
+
+.game-over-content.defeat {
+    border-color: #f44336;
+    box-shadow: 0 0 50px rgba(244, 67, 54, 0.5), inset 0 0 20px rgba(244, 67, 54, 0.1);
+    animation: defeatShake 0.5s ease-in-out;
+}
+
+@keyframes defeatShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
 }
 
 .match-stats {
