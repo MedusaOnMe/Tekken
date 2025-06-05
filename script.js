@@ -75,6 +75,7 @@ class Game {
         });
         
         document.getElementById('character-fight-btn').addEventListener('click', () => {
+            console.log('🎮 ENTER BATTLE CLICKED!');
             this.startGame();
         });
         
@@ -276,6 +277,7 @@ class Game {
     }
     
     startGame() {
+        console.log('🚀 STARTING GAME!');
         this.hideAllScreens();
         document.querySelector('.game-screen').classList.add('active');
         this.state = 'playing';
@@ -284,9 +286,18 @@ class Game {
         const opponentX = this.canvas.width * 0.75;
         const groundY = this.canvas.height - 250;
         
-        this.player = new Character(this.selectedCharacter, playerX, groundY, true);
-        const opponentType = this.selectedCharacter === 'trump' ? 'elon' : 'trump';
-        this.opponent = new Character(opponentType, opponentX, groundY, false);
+        try {
+            console.log('Creating player character:', this.selectedCharacter);
+            this.player = new Character(this.selectedCharacter, playerX, groundY, true);
+            const opponentType = this.selectedCharacter === 'trump' ? 'elon' : 'trump';
+            console.log('Creating opponent character:', opponentType);
+            this.opponent = new Character(opponentType, opponentX, groundY, false);
+            console.log('Characters created successfully');
+        } catch (error) {
+            console.error('Error creating characters:', error);
+            alert('Failed to load game characters. Please refresh and try again.');
+            return;
+        }
         
         this.ai = new FighterAI(this.opponent, this.difficulty);
         this.opponent.ai = this.ai;
