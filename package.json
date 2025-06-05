@@ -4,9 +4,10 @@
   "description": "A web-based 2D fighting game featuring Donald Trump and Elon Musk as playable characters. Built with HTML5, CSS3, and JavaScript, optimized for deployment on Replit.",
   "main": "index.html",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0 --port 3000",
     "build": "vite build",
-    "preview": "vite preview",
+    "preview": "vite preview --host 0.0.0.0 --port 3000",
+    "start": "npm run build && npm run preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
