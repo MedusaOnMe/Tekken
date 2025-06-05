@@ -4,61 +4,196 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bill Fighter</title>
-  <link rel="stylesheet" crossorigin href="/assets/index-DlAX-3JP.css">
+  <script type="module" crossorigin src="./assets/main-fvrIusI4.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/characters-l0sNRNKZ.js">
+  <link rel="modulepreload" crossorigin href="./assets/ai-l0sNRNKZ.js">
+  <link rel="modulepreload" crossorigin href="./assets/audio-l0sNRNKZ.js">
+  <link rel="modulepreload" crossorigin href="./assets/script-CZ1ElLZb.js">
+  <link rel="stylesheet" crossorigin href="./assets/main-m-7z7S9w.css">
 </head>
 <body>
     <div id="game-container">
         <div id="main-menu" class="menu-screen active">
-            <h1 class="game-title">Bill Fighter</h1>
-            <h2 class="game-subtitle">Choose Your Champion</h2>
-            
-            <div class="main-menu-fighters">
-                <div class="fighter-preview">
-                    <img src="/assets/trump_idle-D5hAPl45.png" alt="Trump" class="fighter-sprite">
-                    <h3>Donald Trump</h3>
-                    <p>Heavy Hitter</p>
+            <div class="main-menu-container">
+                <div class="title-section">
+                    <h1 class="game-title">
+                        <span class="title-word title-word-1">BILL</span>
+                        <span class="title-word title-word-2">FIGHTER</span>
+                    </h1>
+                    <div class="title-subtitle">The Ultimate Showdown</div>
                 </div>
-                <div class="vs-text">VS</div>
-                <div class="fighter-preview">
-                    <img src="/assets/elon_idle-U-jPa3q2.png" alt="Elon" class="fighter-sprite">
-                    <h3>Elon Musk</h3>
-                    <p>Tech Master</p>
+                
+                <div class="main-menu-fighters">
+                    <div class="fighter-card fighter-trump">
+                        <div class="fighter-avatar">
+                            <img src="./assets/trump_idle-D5hAPl45.png" alt="Trump" class="fighter-sprite">
+                            <div class="fighter-glow"></div>
+                        </div>
+                        <div class="fighter-info">
+                            <h3 class="fighter-name">DONALD TRUMP</h3>
+                            <p class="fighter-tagline">"You're Fired!"</p>
+                            <div class="fighter-stats-preview">
+                                <div class="stat-bar">
+                                    <span>POWER</span>
+                                    <div class="bar"><div class="fill" style="width: 90%"></div></div>
+                                </div>
+                                <div class="stat-bar">
+                                    <span>SPEED</span>
+                                    <div class="bar"><div class="fill" style="width: 40%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="vs-section">
+                        <div class="vs-text">VS</div>
+                        <div class="vs-lightning"></div>
+                    </div>
+                    
+                    <div class="fighter-card fighter-elon">
+                        <div class="fighter-avatar">
+                            <img src="./assets/elon_idle-U-jPa3q2.png" alt="Elon" class="fighter-sprite">
+                            <div class="fighter-glow"></div>
+                        </div>
+                        <div class="fighter-info">
+                            <h3 class="fighter-name">ELON MUSK</h3>
+                            <p class="fighter-tagline">"To Mars!"</p>
+                            <div class="fighter-stats-preview">
+                                <div class="stat-bar">
+                                    <span>POWER</span>
+                                    <div class="bar"><div class="fill" style="width: 60%"></div></div>
+                                </div>
+                                <div class="stat-bar">
+                                    <span>SPEED</span>
+                                    <div class="bar"><div class="fill" style="width: 90%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="menu-options">
-                <button class="menu-btn" id="start-btn">Start Game</button>
-                <button class="menu-btn" id="difficulty-btn">Difficulty: <span id="difficulty-text">Medium</span></button>
-                <button class="menu-btn" id="controls-btn">Controls</button>
+                
+                <div class="menu-actions">
+                    <button class="action-btn primary-btn" id="start-btn">
+                        <span class="btn-text">START BATTLE</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                    <div class="secondary-actions">
+                        <button class="action-btn secondary-btn" id="difficulty-btn">
+                            <span class="btn-text">DIFFICULTY: <span id="difficulty-text">MEDIUM</span></span>
+                        </button>
+                        <button class="action-btn secondary-btn" id="controls-btn">
+                            <span class="btn-text">CONTROLS</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div id="character-select" class="menu-screen">
-            <h2>Choose Your Fighter</h2>
-            <div class="character-selection">
-                <div class="character-card selected" data-character="trump">
-                    <div class="character-preview trump-preview"></div>
-                    <h3>Donald Trump</h3>
-                    <p>Heavy Hitter</p>
-                    <div class="character-stats">
-                        <div class="stat">Power: ⭐⭐⭐⭐⭐</div>
-                        <div class="stat">Speed: ⭐⭐</div>
-                        <div class="stat">Defense: ⭐⭐⭐⭐</div>
+            <div class="character-select-container">
+                <div class="select-header">
+                    <h2 class="select-title">SELECT YOUR FIGHTER</h2>
+                    <div class="select-subtitle">Choose your champion and enter the arena</div>
+                </div>
+                
+                <div class="character-selection-grid">
+                    <div class="character-card selected" data-character="trump">
+                        <div class="character-showcase">
+                            <div class="character-sprite-container">
+                                <img src="./assets/trump_idle-D5hAPl45.png" alt="Trump" class="character-sprite idle-sprite">
+                                <img src="./assets/trump_punch-C0p4S0FJ.png" alt="Trump Punch" class="character-sprite action-sprite">
+                                <div class="character-aura"></div>
+                            </div>
+                            <div class="character-name-display">DONALD TRUMP</div>
+                            <div class="character-title">THE COMMANDER</div>
+                        </div>
+                        
+                        <div class="character-details">
+                            <div class="character-quote">"You're fired!"</div>
+                            <div class="character-stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-label">POWER</span>
+                                    <div class="stat-meter">
+                                        <div class="stat-fill" style="width: 90%"></div>
+                                    </div>
+                                    <span class="stat-value">90</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">SPEED</span>
+                                    <div class="stat-meter">
+                                        <div class="stat-fill" style="width: 40%"></div>
+                                    </div>
+                                    <span class="stat-value">40</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">DEFENSE</span>
+                                    <div class="stat-meter">
+                                        <div class="stat-fill" style="width: 80%"></div>
+                                    </div>
+                                    <span class="stat-value">80</span>
+                                </div>
+                            </div>
+                            <div class="character-abilities">
+                                <div class="ability">Executive Order</div>
+                                <div class="ability">Big League Slam</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="character-card" data-character="elon">
+                        <div class="character-showcase">
+                            <div class="character-sprite-container">
+                                <img src="./assets/elon_idle-U-jPa3q2.png" alt="Elon" class="character-sprite idle-sprite">
+                                <img src="./assets/elon_kick-zvJxRoL2.png" alt="Elon Kick" class="character-sprite action-sprite">
+                                <div class="character-aura"></div>
+                            </div>
+                            <div class="character-name-display">ELON MUSK</div>
+                            <div class="character-title">THE INNOVATOR</div>
+                        </div>
+                        
+                        <div class="character-details">
+                            <div class="character-quote">"To Mars and beyond!"</div>
+                            <div class="character-stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-label">POWER</span>
+                                    <div class="stat-meter">
+                                        <div class="stat-fill" style="width: 60%"></div>
+                                    </div>
+                                    <span class="stat-value">60</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">SPEED</span>
+                                    <div class="stat-meter">
+                                        <div class="stat-fill" style="width: 90%"></div>
+                                    </div>
+                                    <span class="stat-value">90</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">DEFENSE</span>
+                                    <div class="stat-meter">
+                                        <div class="stat-fill" style="width: 60%"></div>
+                                    </div>
+                                    <span class="stat-value">60</span>
+                                </div>
+                            </div>
+                            <div class="character-abilities">
+                                <div class="ability">Rocket Punch</div>
+                                <div class="ability">Mars Strike</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="character-card" data-character="elon">
-                    <div class="character-preview elon-preview"></div>
-                    <h3>Elon Musk</h3>
-                    <p>Tech Master</p>
-                    <div class="character-stats">
-                        <div class="stat">Power: ⭐⭐⭐</div>
-                        <div class="stat">Speed: ⭐⭐⭐⭐⭐</div>
-                        <div class="stat">Defense: ⭐⭐⭐</div>
-                    </div>
+                
+                <div class="select-actions">
+                    <button class="action-btn primary-btn" id="character-fight-btn">
+                        <span class="btn-text">ENTER BATTLE</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                    <button class="action-btn back-btn" id="character-back">
+                        <span class="btn-text">BACK</span>
+                    </button>
                 </div>
             </div>
-            <button class="menu-btn" id="character-fight-btn">FIGHT!</button>
-            <button class="menu-btn back-btn" id="character-back">Back</button>
         </div>
 
         <div id="controls-screen" class="menu-screen">
@@ -173,45 +308,91 @@
             <button class="menu-btn" id="quit-btn">Quit to Menu</button>
         </div>
 
-        <div id="game-over" class="menu-screen">
+        <div id="victory-screen" class="menu-screen">
             <div class="victory-particles" id="victory-particles"></div>
             <div class="confetti-container" id="confetti-container"></div>
-            <div class="game-over-content">
-                <h2 id="winner-text">WINNER!</h2>
-                <div class="winner-name" id="winner-name"></div>
-                <div class="winner-sprite-container">
-                    <img id="winner-sprite" src="" alt="Winner" class="winner-sprite">
+            
+            <div class="victory-layout">
+                <div class="victory-header">
+                    <h1 class="victory-title">VICTORY!</h1>
+                    <div class="victory-winner" id="victory-winner-name">DONALD TRUMP</div>
+                    <div class="victory-subtitle">EMERGES VICTORIOUS!</div>
                 </div>
                 
-                <div class="match-stats">
-                    <h3>Match Statistics</h3>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <span class="stat-label">Time:</span>
-                            <span class="stat-value" id="match-time"></span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Max Combo:</span>
-                            <span class="stat-value" id="max-combo"></span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Perfect:</span>
-                            <span class="stat-value" id="perfect-win"></span>
-                        </div>
+                <div class="victory-showcase">
+                    <div class="victory-character">
+                        <img id="victory-sprite" src="" alt="Victor" class="victory-sprite">
+                        <div class="victory-glow"></div>
+                    </div>
+                    <div class="victory-quote" id="victory-quote">"You're fired!"</div>
+                </div>
+                
+                <div class="victory-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">MATCH TIME</span>
+                        <span class="stat-value" id="victory-time">1:23</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">MAX COMBO</span>
+                        <span class="stat-value" id="victory-combo">7</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">PERFECT WIN</span>
+                        <span class="stat-value" id="victory-perfect">NO</span>
                     </div>
                 </div>
                 
-                <div class="game-over-buttons">
-                    <button class="menu-btn victory-btn" id="rematch-btn">Rematch</button>
-                    <button class="menu-btn" id="menu-btn">Main Menu</button>
+                <div class="victory-actions">
+                    <button class="victory-btn primary" id="victory-rematch-btn">REMATCH</button>
+                    <button class="victory-btn secondary" id="victory-menu-btn">MAIN MENU</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="defeat-screen" class="menu-screen">
+            <div class="defeat-layout">
+                <div class="defeat-header">
+                    <h1 class="defeat-title">DEFEAT</h1>
+                    <div class="defeat-winner" id="defeat-winner-name">ELON MUSK</div>
+                    <div class="defeat-subtitle">HAS CONQUERED!</div>
+                </div>
+                
+                <div class="defeat-showcase">
+                    <div class="defeat-character">
+                        <img id="defeat-sprite" src="" alt="Victor" class="defeat-sprite">
+                        <div class="defeat-shadow"></div>
+                    </div>
+                    <div class="defeat-quote" id="defeat-quote">"To Mars and beyond!"</div>
+                </div>
+                
+                <div class="defeat-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">MATCH TIME</span>
+                        <span class="stat-value" id="defeat-time">1:23</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">MAX COMBO</span>
+                        <span class="stat-value" id="defeat-combo">7</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">DAMAGE DEALT</span>
+                        <span class="stat-value" id="defeat-damage">152</span>
+                    </div>
+                </div>
+                
+                <div class="defeat-actions">
+                    <button class="defeat-btn primary" id="defeat-rematch-btn">TRY AGAIN</button>
+                    <button class="defeat-btn secondary" id="defeat-menu-btn">MAIN MENU</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="characters.js"></script>
-    <script src="ai.js"></script>
-    <script src="audio.js"></script>
-    <script src="script.js"></script>
+    <script>
+        console.log('🔥 JavaScript is loading!');
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('🏁 DOM loaded, scripts should be running');
+        });
+    </script>
 </body>
 </html>

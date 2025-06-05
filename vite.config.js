@@ -21,7 +21,11 @@ export default defineConfig({
     assetsDir: 'assets',
     rollupOptions: {
       input: {
-        main: './index.html'
+        main: './index.html',
+        characters: './characters.js',
+        ai: './ai.js',
+        audio: './audio.js',
+        script: './script.js'
       }
     }
   }
